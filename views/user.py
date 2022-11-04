@@ -28,7 +28,7 @@ def login_user(user):
         if user_from_db is not None:
             response = {
                 'valid': True,
-                'token': user_from_db['id']
+                'token': str(user_from_db['id'])
             }
         else:
             response = {
