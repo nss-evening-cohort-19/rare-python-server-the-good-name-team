@@ -1,0 +1,5 @@
+{
+    "python.formatting.autopep8Path": "which autopep8",
+    "python.linting.pylintEnabled": true,
+    "git.ignoreLimitWarning": true,
+}
