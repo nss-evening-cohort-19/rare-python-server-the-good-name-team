@@ -1,5 +1,6 @@
 import sqlite3
 import json
+from models import Comment, Post
 
 def get_post_comments():
     """
@@ -20,7 +21,7 @@ def get_post_comments():
             p.id post_id
         FROM Comments c
         JOIN Posts p
-            ON p.id = a.post_id
+            ON p.id = c.post_id
         """)
 
         # Initialize an empty list to hold all animal representations
@@ -33,19 +34,19 @@ def get_post_comments():
         for row in dataset:
 
     # Create an animal instance from the current row
-            comment = Comments(row['id'], row['post_id'], row['user_id'], row['content'])
+            comment = Comment(row['id'], row['post_id'], row['user_id'], row['content'])
 
     # Create a Location instance from the current row
-            location = Location(row['id'], row['location_name'], row['location_address'])
+            post = Post(row['id'], row['post_id'])
 
     # Add the dictionary representation of the location to the animal
-            animal.location = location.__dict__
+            comment.post = post.__dict__
 
     # Add the dictionary representation of the animal to the list
-            animals.append(animal.__dict__)
+            comments.append(comment.__dict__)
 
     # Use `json` package to properly serialize list as JSON
-    return json.dumps(animals)
+    return json.dumps(comments)
 
 def create_comment(new_comment):
     """AI is creating summary for create_comment
