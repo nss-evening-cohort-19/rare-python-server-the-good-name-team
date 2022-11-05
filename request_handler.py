@@ -51,7 +51,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        pass
 
 
     def do_POST(self):
@@ -60,7 +59,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
-        (resource, id) = self.parse_url()
+        (resource) = self.parse_url()
 
         if resource == 'login':
             response = login_user(post_body)
@@ -73,11 +72,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        pass
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        pass
 
 
 def main():
