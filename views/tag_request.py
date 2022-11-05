@@ -3,28 +3,28 @@ import json
 from models import Tag
 
 def get_all_tags():
-    with sqlite3.connect("./rare.db") as conn:
+  with sqlite3.connect("./rare.db") as conn:
 
-        conn.row_factory = sqlite3.Row
-        db_cursor = conn.cursor()
+      conn.row_factory = sqlite3.Row
+      db_cursor = conn.cursor()
 
-        db_cursor.execute("""
+      db_cursor.execute("""
         SELECT
             t.id,
             t.lable
         FROM tag t
         """)
 
-        tags = []
+      tags = []
 
-        dataset = db_cursor.fetchall()
+      dataset = db_cursor.fetchall()
 
-        for row in dataset:
-                tag = Tag(row['id'], row['label'])
+      for row in dataset:
+        tag = Tag(row['id'], row['label'])
 
-                tags.append(tag.__dict__)
+        tags.append(tag.__dict__)
 
-    return json.dumps(tags)
+  return json.dumps(tags)
 
 def get_single_tag(id):
     with sqlite3.connect("./rare.db") as conn:
@@ -32,18 +32,18 @@ def get_single_tag(id):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        SELECT
-            t.id,
-            t.lable
-        FROM Tag t
-        WHERE t.id = ?
-        """, ( id, ))
+          SELECT
+              t.id,
+              t.lable
+          FROM Tag t
+          WHERE t.id = ?
+          """, ( id, ))
 
         data = db_cursor.fetchone()
 
         tag = Tag(data['id'], data['lable'])
 
-        return json.dumps(tag.__dict__)
+    return json.dumps(tag.__dict__)
 
 def create_tag(new_tag):
     with sqlite3.connect("./rare.db") as conn:
