@@ -91,7 +91,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == 'login':
             response = login_user(post_body)
-        elif resource == 'register':
+        if resource == 'register':
             response = create_user(post_body)
         elif resource == 'posts':
             response = create_post(post_body)
