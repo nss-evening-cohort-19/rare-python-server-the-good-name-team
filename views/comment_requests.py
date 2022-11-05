@@ -58,7 +58,7 @@ def create_comment(new_comment):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Animal
+        INSERT INTO Comments
             ( post_id, author_id, content )
         VALUES
             ( ?, ?, ? );
