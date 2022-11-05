@@ -1,7 +1,14 @@
+"""module for server requests"""
+
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-
+from views.post_request import (get_all_posts,
+                                create_post,
+                                update_post,
+                                delete_post)
 from views.user import create_user, login_user
+from views.category_requests import (
+    get_all_categories, create_category, delete_category, update_category, get_single_category)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -51,8 +58,28 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        pass
+        self._set_headers(200)
 
+        response = {}
+
+        parsed = self.parse_url()
+
+        if '?' not in self.path:
+            (resource, id) = parsed
+
+            if resource == 'posts':
+                if id is not None:
+                    pass
+                else:
+                    response = f"{get_all_posts()}"
+
+            elif resource == 'categories':
+                if id is not None:
+                    response = f"{get_single_category(id)}"
+                else:
+                    response = f"{get_all_categories()}"
+
+        self.wfile.write(response.encode())
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -60,22 +87,54 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
-        resource, _ = self.parse_url()
+        (resource) = self.parse_url()
 
         if resource == 'login':
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        elif resource == 'posts':
+            response = create_post(post_body)
+        elif resource == 'categories':
+            response = create_category(post_body)
 
         self.wfile.write(response.encode())
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url()
+
+        success = False
+
+        if resource == "posts":
+            success = update_post(id, post_body)
+        elif resource == 'categories':
+            success = update_category(id, post_body)
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        pass
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url()
+
+        if resource == "posts":
+            delete_post(id)
+        elif resource == 'categories':
+            delete_category(id)
+
+        self.wfile.write("".encode())
 
 
 def main():
