@@ -1,6 +1,11 @@
+"""module for server requests"""
+
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views.post_request import create_post
+from views.post_request import (get_all_posts,
+                                create_post,
+                                update_post,
+                                delete_post)
 from views.user import create_user, login_user
 
 
@@ -51,6 +56,22 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
+        self._set_headers(200)
+
+        response = {}
+
+        parsed = self.parse_url()
+
+        if '?' not in self.path:
+            (resource, id) = parsed
+
+            if resource == 'posts':
+                if id is not None:
+                    pass
+                else:
+                    response = f"{get_all_posts()}"
+
+        self.wfile.write(response.encode())
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -71,9 +92,36 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url()
+
+        success = False
+
+        if resource == "posts":
+            success = update_post(id, post_body)
+        # rest of the elif's
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url()
+
+        if resource == "posts":
+            delete_post(id)
+
+        self.wfile.write("".encode())
 
 
 def main():

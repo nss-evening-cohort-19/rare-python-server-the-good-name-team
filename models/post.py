@@ -1,5 +1,8 @@
-class Post:
-    """_summary_
+"""Post model
+    """
+
+class Post():
+    """Post class
     """
 
     def __init__(self,
