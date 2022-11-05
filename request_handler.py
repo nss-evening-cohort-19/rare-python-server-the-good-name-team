@@ -7,6 +7,8 @@ from views.post_request import (get_all_posts,
                                 update_post,
                                 delete_post)
 from views.user import create_user, login_user
+from views.category_requests import (
+    get_all_categories, create_category, delete_category, update_category, get_single_category)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -71,6 +73,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_posts()}"
 
+            elif resource == 'categories':
+                if id is not None:
+                    response = f"{get_single_category(id)}"
+                else:
+                    response = f"{get_all_categories()}"
+
         self.wfile.write(response.encode())
 
     def do_POST(self):
@@ -87,6 +95,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         elif resource == 'posts':
             response = create_post(post_body)
+        elif resource == 'categories':
+            response = create_category(post_body)
 
         self.wfile.write(response.encode())
 
@@ -103,7 +113,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
-        # rest of the elif's
+        elif resource == 'categories':
+            success = update_category(id, post_body)
 
         if success:
             self._set_headers(204)
@@ -120,6 +131,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
+        elif resource == 'categories':
+            delete_category(id)
 
         self.wfile.write("".encode())
 
