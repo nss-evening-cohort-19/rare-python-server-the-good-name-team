@@ -123,7 +123,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         self.wfile.write("".encode())
 
-
 def main():
     """Starts the server on port 8088 using the HandleRequests class
     """
