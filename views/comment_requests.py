@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Comment, Post
 
+
 def get_post_comments():
     """
         gets a single posts comments
@@ -33,8 +34,9 @@ def get_post_comments():
         # Iterate list of data returned from database
         for row in dataset:
 
-    # Create an animal instance from the current row
-            comment = Comment(row['id'], row['post_id'], row['user_id'], row['content'])
+            # Create an animal instance from the current row
+            comment = Comment(row['id'], row['post_id'],
+                              row['user_id'], row['content'])
 
     # Create a Location instance from the current row
             post = Post(row['id'], row['post_id'])
@@ -47,6 +49,7 @@ def get_post_comments():
 
     # Use `json` package to properly serialize list as JSON
     return json.dumps(comments)
+
 
 def create_comment(new_comment):
     """AI is creating summary for create_comment
@@ -76,6 +79,7 @@ def create_comment(new_comment):
 
     return json.dumps(new_comment)
 
+
 def delete_comment(id):
     """
             deletes comment from database
@@ -87,6 +91,7 @@ def delete_comment(id):
         DELETE FROM Comments
         WHERE id = ?
         """, (id, ))
+
 
 def update_comment(id, new_comment):
     """
