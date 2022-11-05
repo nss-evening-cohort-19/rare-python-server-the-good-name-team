@@ -9,6 +9,8 @@ from views.post_request import (get_all_posts,
 from views.user import create_user, login_user
 from views.category_requests import (
     get_all_categories, create_category, delete_category, update_category, get_single_category)
+from views.tag_request import (
+    get_single_tag, get_all_tags, create_tag, delete_tag)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -79,6 +81,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_categories()}"
 
+            elif resource == "tags":
+                if id is not None:
+                    response = get_single_tag(id)
+                else:
+                    response = get_all_tags()  
+
         self.wfile.write(response.encode())
 
     def do_POST(self):
@@ -97,6 +105,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_post(post_body)
         elif resource == 'categories':
             response = create_category(post_body)
+        elif resource == "tags":
+            response = create_tag(post_body)  
 
         self.wfile.write(response.encode())
 
@@ -133,7 +143,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_post(id)
         elif resource == 'categories':
             delete_category(id)
-
+        elif resource == 'tags':
+            delete_tag(id)
         self.wfile.write("".encode())
 
 
