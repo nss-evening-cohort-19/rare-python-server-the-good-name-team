@@ -3,6 +3,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.post_request import (get_all_posts,
+                                get_single_post,
                                 create_post,
                                 update_post,
                                 delete_post)
@@ -68,11 +69,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         parsed = self.parse_url()
 
         if '?' not in self.path:
-            (resource, id) = parsed
+            ( resource, id ) = parsed
 
             if resource == 'posts':
                 if id is not None:
-                    pass
+                    response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
 
@@ -96,11 +97,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
-        (resource) = self.parse_url()
+        (resource, id) = self.parse_url()
 
         if resource == 'login':
             response = login_user(post_body)
-        if resource == 'register':
+        elif resource == 'register':
             response = create_user(post_body)
         elif resource == 'posts':
             response = create_post(post_body)
