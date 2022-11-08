@@ -90,3 +90,8 @@ INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
 INSERT INTO Posts VALUES (null, 1, 1, "Test Post", "2022-11-5", "https://pbs.twimg.com/media/Fgp8E_bXoAERVhu?format=png&name=small", "Test Post", True);
+
+INSERT INTO Categories VALUES (null, "Test1");
+INSERT INTO Categories VALUES (null, "Test2");
+INSERT INTO Categories VALUES (null, "Test3");
+INSERT INTO Categories VALUES (null, "Test4");
