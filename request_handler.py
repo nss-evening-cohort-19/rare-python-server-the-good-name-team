@@ -3,11 +3,16 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.post_request import (get_all_posts,
+                                get_single_post,
                                 create_post,
                                 update_post,
                                 delete_post)
 from views.user import create_user, login_user
 from views.comment_requests import (get_post_comments, create_comment, update_comment, delete_comment)
+from views.category_requests import (
+    get_all_categories, create_category, delete_category, update_category, get_single_category)
+from views.tag_request import (
+    get_single_tag, get_all_tags, create_tag, delete_tag)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -64,11 +69,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         parsed = self.parse_url()
 
         if '?' not in self.path:
-            (resource, id) = parsed
+            ( resource, id ) = parsed
 
             if resource == 'posts':
                 if id is not None:
-                    pass
+                    response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
             elif resource == "comment":
@@ -76,6 +81,18 @@ class HandleRequests(BaseHTTPRequestHandler):
                     pass
                 else:
                     response = f"{get_post_comments}"
+
+            elif resource == 'categories':
+                if id is not None:
+                    response = f"{get_single_category(id)}"
+                else:
+                    response = f"{get_all_categories()}"
+
+            elif resource == "tags":
+                if id is not None:
+                    response = get_single_tag(id)
+                else:
+                    response = get_all_tags()
 
         self.wfile.write(response.encode())
 
@@ -85,7 +102,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
-        (resource) = self.parse_url()
+        (resource, id) = self.parse_url()
 
         if resource == 'login':
             response = login_user(post_body)
@@ -95,6 +112,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_post(post_body)
         elif resource == "comment":
             resource = create_comment(post_body)
+        elif resource == 'categories':
+            response = create_category(post_body)
+        elif resource == "tags":
+            response = create_tag(post_body)
 
         self.wfile.write(response.encode())
 
@@ -111,7 +132,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
-        # rest of the elif's
+        elif resource == 'categories':
+            success = update_category(id, post_body)
 
         if resource =="comment":
             success = update_comment(id, post_body)
@@ -134,8 +156,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
-
+        elif resource == 'categories':
+            delete_category(id)
+        elif resource == 'tags':
+            delete_tag(id)
         self.wfile.write("".encode())
+
 
 def main():
     """Starts the server on port 8088 using the HandleRequests class
