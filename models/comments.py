@@ -2,11 +2,13 @@ class Comment():
     """AI is creating summary for Comment
     """
 
-    def __init__(self, id, user_id, post_id, content):
+    def __init__(self, id, author_id, post_id, content, category_id, title, publication_date, image_url):
         self.id = id
-        self.user_id = user_id
+        self.author_id = author_id
         self.post_id = post_id
         self.content = content
-
-new_comment = Comment(1, 2, 3, "hello")
-        
+        self.category = category_id
+        self.title = title
+        self.post_content = content
+        self.date = publication_date
+        self.image = image_url

@@ -17,8 +17,13 @@ def get_post_comments():
         SELECT
             c.id,
             c.post_id
-            c.user.id
+            c.author_id
             p.id post_id
+            p.category category_id
+            p.title title
+            p.publication_date publication_date
+            p.image image_url
+            p.content content
         FROM Comments c
         JOIN Posts p
             ON p.id = c.post_id
@@ -34,14 +39,12 @@ def get_post_comments():
         for row in dataset:
 
     # Create an animal instance from the current row
-            comment = Comment(row['id'], row['post_id'], row['user_id'], row['content'])
+            comment = Comment(row['id'], row['post_id'], row['author_id'], row['content'], row['category_id'], row['title'], row['image_url'], row['content'])
 
-    # Create a Location instance from the current row
-            post = Post(row['id'], row['post_id'])
-
+        # Create a Location instance from the current row
+            post = Post(row['id'], row['post_id'], row['category_id'], row['title'], row['publication_date'], row['content'], row['image_url'])
     # Add the dictionary representation of the location to the animal
             comment.post = post.__dict__
-
     # Add the dictionary representation of the animal to the list
             comments.append(comment.__dict__)
 
