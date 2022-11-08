@@ -2,7 +2,8 @@ import sqlite3
 import json
 from models import PostTag
 
-def get_all_postTags():
+def get_all_post_tags():
+    """Gets all postsTags"""
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -18,17 +19,18 @@ def get_all_postTags():
       ON t.id = pt.tag_id
       """)
 
-        postTags = []
+        post_tags = []
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            postTag = PostTag(row['id'], row['post_id'], row['tag_id'])
-            postTags.append(postTag.__dict__)
+            post_tag = PostTag(row['id'], row['post_id'], row['tag_id'])
+            post_tags.append(post_tag.__dict__)
 
-    return json.dumps(postTags)
+    return json.dumps(post_tags)
 
 
-def get_single_postTag(id):
+def get_single_post_tag(id):
+    """Gets a single postTag"""
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -37,8 +39,8 @@ def get_single_postTag(id):
         db_cursor.execute("""
         SELECT
             pt.id,
-            pt.postId,
-            pt.tagId
+            pt.post_id,
+            pt.tag_id
         FROM Posttag pt
          WHERE pt.id = ?
         """, ( id, ))
@@ -46,11 +48,12 @@ def get_single_postTag(id):
 
         data = db_cursor.fetchone()
 
-        postTags = PostTag(data['id'], data['postId'], data['tagId'])
+        post_tags = PostTag(data['id'], data['postId'], data['tagId'])
 
-        return json.dumps(postTags.__dict__)
+        return json.dumps(post_tags.__dict__)
 
-def create_postTag(new_postTag):
+def create_post_tag(new_post_tag):
+    """Creates a new postTag"""
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -59,19 +62,20 @@ def create_postTag(new_postTag):
 			( post_id, tag_id )
 		VALUES
 			(?, ?);
-		""", (new_postTag['post_id'], new_postTag['tag_id']) )
+		""", (new_post_tag['post_id'], new_post_tag['tag_id']) )
         id = db_cursor.lastrowid
-        new_postTag['id'] = id
-    return json.dumps(new_postTag)
+        new_post_tag['id'] = id
+    return json.dumps(new_post_tag)
 
-def delete_postTag(postTag_Id):
+def delete_post_tag(post_tag_id):
+    """Gets all posts"""
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
         db_cursor.execute("""
             DELETE FROM post_tag
             WHERE id = ?
-            """, (postTag_Id, ) )
+            """, (post_tag_id, ) )
 
         rows_needed = db_cursor.rowcount
 
