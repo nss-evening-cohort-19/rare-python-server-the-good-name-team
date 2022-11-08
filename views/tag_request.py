@@ -3,6 +3,7 @@ import json
 from models import Tag
 
 def get_all_tags():
+    """Gets all tags"""
     with sqlite3.connect("./rare.db") as conn:
 
         conn.row_factory = sqlite3.Row
@@ -27,6 +28,7 @@ def get_all_tags():
     return json.dumps(tags)
 
 def get_single_tag(id):
+    """Gets single tag"""
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -46,6 +48,7 @@ def get_single_tag(id):
     return json.dumps(tag.__dict__)
 
 def create_tag(new_tag):
+    """Creates a new tag"""
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
@@ -63,6 +66,7 @@ def create_tag(new_tag):
     return json.dumps(new_tag)
 
 def delete_tag(id):
+    """Deletes a tag"""
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
