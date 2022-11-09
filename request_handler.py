@@ -8,7 +8,7 @@ from views.post_request import (get_all_posts,
                                 update_post,
                                 delete_post)
 from views.user import create_user, login_user
-from views.comment_requests import (get_post_comments, create_comment, update_comment, delete_comment)
+from views.comment_requests import (get_all_comments, get_single_comment, create_comment, update_comment, delete_comment)
 from views.category_requests import (
     get_all_categories, create_category, delete_category, update_category, get_single_category)
 from views.tag_request import (
@@ -76,11 +76,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
-            elif resource == "comment":
+            elif resource == "comments":
                 if id is not None:
-                    pass
+                    response = f"{get_single_comment(id)}"
                 else:
-                    response = f"{get_post_comments}"
+                    response = f"{get_all_comments()}"
 
             elif resource == 'categories':
                 if id is not None:
@@ -110,7 +110,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         elif resource == 'posts':
             response = create_post(post_body)
-        elif resource == "comment":
+        elif resource == "comments":
             resource = create_comment(post_body)
         elif resource == 'categories':
             response = create_category(post_body)
@@ -135,8 +135,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif resource == 'categories':
             success = update_category(id, post_body)
 
-        if resource =="comment":
-            success = update_comment(id, post_body)
+        elif resource == "comments":
+            update_comment(id, post_body)
 
         if success:
             self._set_headers(204)
@@ -151,7 +151,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url()
 
-        if resource == "comment":
+        if resource == "comments":
             delete_comment(id)
 
         if resource == "posts":
