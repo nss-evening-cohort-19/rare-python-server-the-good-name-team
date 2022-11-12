@@ -8,7 +8,7 @@ from views.post_request import (get_all_posts,
                                 update_post,
                                 delete_post)
 from views.user import create_user, login_user
-from views.category_requests import (
+from views.category_request import (
     get_all_categories, create_category, delete_category, update_category, get_single_category)
 from views.tag_request import (
     get_single_tag, get_all_tags, create_tag, delete_tag)
@@ -68,7 +68,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         parsed = self.parse_url()
 
         if '?' not in self.path:
-            ( resource, id ) = parsed
+            (resource, id) = parsed
 
             if resource == 'posts':
                 if id is not None:
@@ -124,7 +124,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
-        elif resource == 'categories':
+        elif resource == "categories":
             success = update_category(id, post_body)
 
         if success:
@@ -142,7 +142,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
-        elif resource == 'categories':
+        elif resource == "categories":
             delete_category(id)
         elif resource == 'tags':
             delete_tag(id)
