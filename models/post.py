@@ -13,7 +13,7 @@ class Post():
                  publication_date,
                  image_url,
                  content,
-                 approved=True):
+                 approved):
         self.id = id
         self.user_id = user_id
         self.category_id = category_id
