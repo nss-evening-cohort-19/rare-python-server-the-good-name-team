@@ -11,8 +11,8 @@ def get_all_tags():
         db_cursor.execute("""
         SELECT
             t.id,
-            t.lable
-        FROM tag t
+            t.label
+        FROM Tags t
         """)
 
         tags = []
@@ -34,14 +34,14 @@ def get_single_tag(id):
         db_cursor.execute("""
           SELECT
               t.id,
-              t.lable
-          FROM Tag t
+              t.label
+          FROM Tags t
           WHERE t.id = ?
           """, ( id, ))
 
         data = db_cursor.fetchone()
 
-        tag = Tag(data['id'], data['lable'])
+        tag = Tag(data['id'], data['label'])
 
     return json.dumps(tag.__dict__)
 
@@ -51,11 +51,11 @@ def create_tag(new_tag):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Tag
+        INSERT INTO Tags
             (label)
         VALUES
             (?);
-        """, (new_tag['lable'],))
+        """, (new_tag['label'],))
 
         id = db_cursor.lastrowid
 
@@ -69,6 +69,6 @@ def delete_tag(id):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM tag
+        DELETE FROM Tags
         WHERE id = ?
         """, (id, ))

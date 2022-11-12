@@ -1,6 +1,6 @@
 
 class Tag():
     """tag class"""
-    def __init__(self, id, lable):
+    def __init__(self, id, label):
         self.id = id
-        self.lable = lable
+        self.label = label
