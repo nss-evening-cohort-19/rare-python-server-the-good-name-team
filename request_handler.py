@@ -1,19 +1,19 @@
 """module for server requests"""
 
-from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views.post_request import (get_all_posts,
-                                get_single_post,
-                                create_post,
-                                update_post,
-                                delete_post)
-from views.user import create_user, login_user
-from views.comment_requests import (get_all_comments, get_single_comment, create_comment, update_comment, delete_comment)
-from views.category_requests import (
-    get_all_categories, create_category, delete_category, update_category, get_single_category)
-from views.tag_request import (
-    get_single_tag, get_all_tags, create_tag)
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+from views.category_request import (create_category, delete_category,
+                                    get_all_categories, get_single_category,
+                                    update_category)
+from views.comment_requests import (create_comment, delete_comment,
+                                    get_all_comments, get_single_comment,
+                                    update_comment)
+from views.post_request import (create_post, delete_post, get_all_posts,
+                                get_single_post, update_post)
 from views.post_tag_request import create_post_tag, delete_post_tag
+from views.tag_request import create_tag, get_all_tags, get_single_tag
+from views.user import create_user, login_user
 
 
 class HandleRequests(BaseHTTPRequestHandler):
