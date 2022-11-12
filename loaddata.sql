@@ -103,3 +103,6 @@ INSERT INTO Tags VALUES (null, "category1");
 INSERT INTO Tags VALUES (null, "category2");
 INSERT INTO Tags VALUES (null, "category3");
 INSERT INTO Tags VALUES (null, "category4");
+
+SELECT *
+FROM Tags
