@@ -11,7 +11,7 @@ from views.comment_requests import (create_comment, delete_comment,
                                     update_comment)
 from views.post_request import (create_post, delete_post, get_all_posts,
                                 get_single_post, update_post)
-from views.post_tag_request import create_post_tag, delete_post_tag
+from views.post_tag_request import create_post_tag, delete_post_tag, get_post_tags_by_post_id
 from views.tag_request import create_tag, get_all_tags, get_single_tag
 from views.user import create_user, login_user
 
@@ -94,6 +94,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_tag(id)}"
                 else:
                     response = f"{get_all_tags()}"
+        else:
+            (resource, key, value) = parsed
+
+            if resource == "post_tags" and key == "post_id":
+                response = get_post_tags_by_post_id(value)
 
         self.wfile.write(response.encode())
 
@@ -154,15 +159,15 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url()
 
-        if resource == "comments":
-            delete_comment(id)
-
         if resource == "posts":
             delete_post(id)
         elif resource == "categories":
             delete_category(id)
         elif resource == "post_tags":
             delete_post_tag(id)
+        elif resource == "comments":
+            delete_comment(id)
+
         self.wfile.write("".encode())
 
 

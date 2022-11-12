@@ -95,3 +95,11 @@ INSERT INTO Categories VALUES (null, "Test1");
 INSERT INTO Categories VALUES (null, "Test2");
 INSERT INTO Categories VALUES (null, "Test3");
 INSERT INTO Categories VALUES (null, "Test4");
+
+
+INSERT INTO Users VALUES (null, "Test2", "Test2", "test2@test2.com", "test2 bio", "taty", "taty", "https://pbs.twimg.com/media/Fgp8E_bXoAERVhu?format=png&name=small", "2022-11-5", True);
+
+INSERT INTO Tags VALUES (null, "category1");
+INSERT INTO Tags VALUES (null, "category2");
+INSERT INTO Tags VALUES (null, "category3");
+INSERT INTO Tags VALUES (null, "category4");
