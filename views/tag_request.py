@@ -4,20 +4,18 @@ from models import Tag
 
 def get_all_tags():
     """Gets all tags"""
-    with sqlite3.connect("./rare.db") as conn:
+    with sqlite3.connect('./db.sqlite3') as conn:
 
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
-
         db_cursor.execute("""
-            SELECT
-                t.id,
-                t.lable
-            FROM tag t
-            """)
+        SELECT
+            t.id,
+            t.lable
+        FROM tag t
+        """)
 
         tags = []
-
         dataset = db_cursor.fetchall()
 
         for row in dataset:
@@ -25,11 +23,11 @@ def get_all_tags():
 
             tags.append(tag.__dict__)
 
-    return json.dumps(tags)
+        return json.dumps(tags)
 
 def get_single_tag(id):
     """Gets single tag"""
-    with sqlite3.connect("./rare.db") as conn:
+    with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -49,25 +47,25 @@ def get_single_tag(id):
 
 def create_tag(new_tag):
     """Creates a new tag"""
-    with sqlite3.connect("./rare.db") as conn:
+    with sqlite3.connect('./db.sqlite3') as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         INSERT INTO Tag
-            ( label )
+            (label)
         VALUES
-            ( ? );
+            (?);
         """, (new_tag['lable'],))
 
         id = db_cursor.lastrowid
 
         new_tag['id'] = id
 
-    return json.dumps(new_tag)
+        return json.dumps(new_tag)
 
 def delete_tag(id):
     """Deletes a tag"""
-    with sqlite3.connect("./rare.db") as conn:
+    with sqlite3.connect('./db.sqlite3') as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
