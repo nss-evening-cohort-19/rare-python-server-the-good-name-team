@@ -1,6 +1,8 @@
-import sqlite3
 import json
+import sqlite3
+
 from models import Tag
+
 
 def get_all_tags():
     """Gets all tags"""

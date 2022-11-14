@@ -5,6 +5,6 @@ class Category:
 
     """category class for posts"""
 
-    def __init__(self, id, lable):
+    def __init__(self, id, label):
         self.id = id
-        self.lable = lable
+        self.label = label
